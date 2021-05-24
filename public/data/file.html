@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<!-- prior comment allows JS to execute on IE when saved as a local file, "MOTW" -->
+<html lang="en">
+  <head>
+    <title>Chef InSpec Results</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+    /* Must inline all CSS files, this is a single-file output that may be airgapped */
+    body {
+  margin: 20px 10% 20px 10%;
+  padding: 0;
+  background: #fff;
+}
+h1, h2, h3, h4, h5 {
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+}
+h1, h2 {
+  padding: 10px;
+  text-align: center
+}
+table.info th, table.info th {
+  padding: 2px;
+}
+table.info th {
+  text-align: right;
+}
+.hidden {
+  display: none;
+}
+pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+}
+
+.profile, .control, .profile-metadata {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px auto;
+}
+
+.resource-title {
+  margin-left: 2.5%;
+}
+
+.control-title code,
+.resource-title code {
+  font-size: larger;
+}
+.control-metadata .status div,
+.result-metadata .status div {
+  color: white;
+  font-weight: bold;
+  width: fit-content;
+  padding: 0px 2px;
+}
+
+.control-metadata .status-passed div,
+.result-metadata .status-passed div  {
+  background-color: darkgreen;
+}
+.control-metadata .status-failed div,
+.result-metadata .status-failed div {
+  background-color: red;
+}
+.control-metadata .status-skipped div,
+.result-metadata .status-skipped div  {
+  background-color: grey;
+}
+.result-metadata,
+.control-metadata {
+  margin: 0 0 0 5%;
+}
+
+.selector-panel {
+  position: fixed;
+  z-index: 100;
+  background-color: #ccc;
+  padding: 10px;
+  top: 0;
+  margin-left: -10%;
+  border-bottom-right-radius: 10px;
+}
+
+@media print {
+  .selector-panel {
+     visibility: hidden;
+  }
+}
+
+.inspec-summary {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px auto;
+  width: fit-content
+}
+
+.inspec-summary h4 {
+  margin-bottom: 0px;
+}
+
+.inspec-summary #platform, .inspec-summary #statistics {
+  display: inline;
+}
+
+#statistics .date td {
+  width: 100px
+}
+
+#inspec-version {
+  display: block;
+  text-align: center;
+  font-style: italic;
+}
+
+    </style>
+    <script type="text/javascript">
+    // <![CDATA[
+    /* Must inline all JavaScript files, this is a single-file output that may be airgapped */
+    
+/* CSS primitives */
+function addCssClass(id, cls) {
+  document.getElementById(id).className += (" " + cls);
+}
+
+function removeCssClass(id, cls) {
+  var el = document.getElementById(id);
+  var classes = el.className.replace(cls,'');
+  el.className = classes;
+}
+
+function handleShowSource(evt) {
+  var control_id = evt.srcElement.id.replace("show-code-", "")
+  addCssClass(evt.srcElement.id, "hidden")
+  removeCssClass("hide-code-" + control_id, "hidden")
+  removeCssClass("source-code-" + control_id, "hidden")
+}
+
+function handleHideSource(evt) {
+  var control_id = evt.srcElement.id.replace("hide-code-", "")
+  addCssClass(evt.srcElement.id, "hidden")
+  addCssClass("source-code-" + control_id, "hidden")
+  removeCssClass("show-code-" + control_id, "hidden")
+}
+
+function handleSelectorChange(evt) {
+  var should_show = evt.srcElement.checked
+  var which_group = evt.srcElement.id.replace("-checkbox","")
+  var controls = document.getElementsByClassName("control-status-" + which_group)
+  var i;
+  if (should_show) {
+    for (i = 0; i < controls.length; i++) {
+      removeCssClass(controls[i].id, "hidden")
+    }
+  } else {
+    for (i = 0; i < controls.length; i++) {
+      addCssClass(controls[i].id, "hidden")
+    }
+  }
+}
+
+function handleChildProfileChange(evt) {
+  var should_show = evt.srcElement.checked
+  var child_profiles = document.getElementsByClassName("child-profile")
+  var i;
+  if (should_show) {
+    for (i = 0; i < child_profiles.length; i++) {
+      removeCssClass(child_profiles[i].id, "hidden")
+    }
+  } else {
+    for (i = 0; i < child_profiles.length; i++) {
+      addCssClass(child_profiles[i].id, "hidden")
+    }
+  }
+}
+
+/* Main entry point */
+function  pageLoaded() {
+  var i;
+
+  // wire up show source links
+  var show_links = document.getElementsByClassName("show-source-code");
+  for (i = 0; i < show_links.length; i++) {
+    show_links[i].onclick = handleShowSource;
+  }
+  // wire up hide source links
+  var hide_links = document.getElementsByClassName("hide-source-code");
+  for (i = 0; i < hide_links.length; i++) {
+    hide_links[i].onclick = handleHideSource;
+  }
+  // wire up selector checkboxes
+  var selectors = document.getElementsByClassName("selector-checkbox");
+  for (i = 0; i < selectors.length; i++) {
+    selectors[i].onchange = handleSelectorChange;
+  }
+  // wire up child profile checkbox
+  document.getElementById("child-profile-checkbox").onchange = handleChildProfileChange;
+}
+
+    // ]]>
+    </script>
+  </head>
+  <body onload="pageLoaded()">
+    <div class="selector-panel">
+  <p id="selector-instructions">Display controls that are:</p>
+  <input class="selector-checkbox" id="passed-checkbox" type="checkbox" checked="checked"/><label for="passed-checkbox">Passed</label>
+  <input class="selector-checkbox" id="skipped-checkbox" type="checkbox" checked="checked"/><label for="skipped-checkbox">Skipped</label>
+  <input class="selector-checkbox" id="failed-checkbox" type="checkbox" checked="checked"/><label for="failed-checkbox">Failed</label>
+  <p id="selector-instructions">Display profiles that are:</p>
+  <input class="profile-selector-checkbox" id="child-profile-checkbox" type="checkbox" /><label for="child-profile-checkbox">Dependent Profiles</label>
+</div>
+
+    <div class="inspec-report">
+    <h1>Chef InSpec Report</h1>
+    
+      <div class="profile " id="profile-tests from {:path=>"D:.Code.playground.git_cookbook.test.integration.file"}">
+  
+  <h2 class="profile_title">Profile tests from {:path=>"D:/Code/playground/git_cookbook/test/integration/file"} (tests from {:path=>"D:.Code.playground.git_cookbook.test.integration.file"})</h2>
+
+  <table class="profile-metadata info" id="profile-metadata-tests from {:path=>"D:.Code.playground.git_cookbook.test.integration.file"}">
+    <tr class="profile-version"><th>Version:</th><td></td></tr>
+    
+    
+    
+  </table>
+
+  
+    
+      
+
+
+<div class="control control-status-passed" id="control-file">
+
+  
+
+  <h3 class="control-title">Control <code>file</code></h3>
+  <table class="control-metadata info" id="control-metadata-file">
+    <tr class="status status-passed"><th>Status:</th><td><div>Passed</div></td></tr>
+    <tr class="title"><th>Title:</th><td>Check whether file exists</td></tr> 
+    <tr class="desc"><th>Description:</th><td>Check whether configuration file has been installed to path</td></tr> 
+    <tr class="impact impact-medium"><th>Impact:</th><td>0.5</td></tr> 
+    
+    
+    <tr class="code">
+      <th>Source Code:</th>
+      <td>
+        <input type="button" class="show-source-code" id="show-code-file" value="Show Source"/>
+        <input type="button" class="hide-source-code hidden" id="hide-code-file" value="Hide Source"/>
+        <pre class="source-code hidden" id="source-code-file">
+          <code>
+control 'file' do
+  title 'Check whether file exists'
+  desc 'Check whether configuration file has been installed to path'
+
+  describe file('/home/vagrant/config.toml') do
+    it { should exist }
+    its('content') { should match /git_cookbook/ }
+  end
+end
+
+          </code>
+        </pre>
+      </td>
+    </tr>
+  <!-- TODO waiver data -->
+
+  </table>
+
+  
+    
+<div class="result" id="result-File__home_vagrant_config_toml">
+  <h4 class="resource-title">Resource <code>File /home/vagrant/config.toml</code></h4>
+  <table class="result-metadata info">
+    <tr class="expectation_message"><th>Test:</th><td><code>is expected to exist</code></td></tr>
+    <tr class="status status-passed"><th>Status:</th><td><div>Passed</div></td></tr>
+    
+    
+    <tr class="duration"><th>Duration:</th><td>0.0458256 seconds</td></tr>
+  </table>
+</div>
+
+  
+    
+<div class="result" id="result-File__home_vagrant_config_toml">
+  <h4 class="resource-title">Resource <code>File /home/vagrant/config.toml</code></h4>
+  <table class="result-metadata info">
+    <tr class="expectation_message"><th>Test:</th><td><code>content is expected to match /git_cookbook/</code></td></tr>
+    <tr class="status status-passed"><th>Status:</th><td><div>Passed</div></td></tr>
+    
+    
+    <tr class="duration"><th>Duration:</th><td>0.0504147 seconds</td></tr>
+  </table>
+</div>
+
+  
+
+</div>
+
+    
+  
+</div>
+
+    
+
+    <div class="inspec-summary">
+      <table id="platform" class="info">
+        <tr><th colspan=2><h4 id="platform-label">Platform Information</h4></th></tr>
+        <tr class= "name"><th>Name:</th><td>ubuntu</td></tr>
+        <tr class= "release"><th>Release:</th><td>20.04</td></tr>
+        <tr class= "target"><th>Target:</th><td>ssh://vagrant@127.0.0.1:2200</td></tr>
+      </table>
+      <table id="statistics" class="info">
+        <tr><th colspan="2"><h4 id="statistics-label">Control Statistics</h4></th></tr>
+        <tr class= "passed"><th>Passed:</th><td>1</td></tr>
+        <tr class= "skipped"><th>Skipped:</th><td>0</td></tr>
+        <tr class= "failed"><th>Failed:</th><td>0</td></tr>
+        <tr class= "duration"><th>Duration:</th><td>0.1300477 seconds</td></tr>
+        <tr class= "date"><th>Time Finished:</th><td>2021-05-25 00:11:32 +0700</td></tr>
+      </table>
+      <span id="inspec-version">Chef InSpec version 4.29.3</span>
+    </div>
+    </div>
+  </body>
+</html>
+

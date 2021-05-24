@@ -1,0 +1,57 @@
+{
+  "platform": { "name": "ubuntu", "release": "20.04" },
+  "profiles": [
+    {
+      "name": "tests from {:path=>\"D:.Code.playground.git_cookbook.test.integration.file\"}",
+      "sha256": "81f64230d33aab6ba147b615ec7b8b044dcdff4189161497b8ec6ba1e98f70ab",
+      "title": "tests from {:path=>\"D:/Code/playground/git_cookbook/test/integration/file\"}",
+      "supports": [],
+      "attributes": [],
+      "groups": [{ "id": "file_test.rb", "controls": ["file"] }],
+      "controls": [
+        {
+          "id": "file",
+          "title": "Check whether file exists",
+          "desc": "Check whether configuration file has been installed to path",
+          "descriptions": [
+            {
+              "label": "default",
+              "data": "Check whether configuration file has been installed to path"
+            }
+          ],
+          "impact": 0.5,
+          "refs": [],
+          "tags": {},
+          "code": "control 'file' do\n  title 'Check whether file exists'\n  desc 'Check whether configuration file has been installed to path'\n\n  describe file('/home/vagrant/config.toml') do\n    it { should exist }\n    its('content') { should match /git_cookbook/ }\n  end\nend\n",
+          "source_location": {
+            "line": 1,
+            "ref": "D:/Code/playground/git_cookbook/test/integration/file/file_test.rb"
+          },
+          "waiver_data": {},
+          "results": [
+            {
+              "status": "passed",
+              "code_desc": "File /home/vagrant/config.toml is expected to exist",
+              "run_time": 0.0458256,
+              "start_time": "2021-05-25T00:11:32+07:00",
+              "resource_class": "file",
+              "resource_params": "[\"/home/vagrant/config.toml\"]"
+            },
+            {
+              "status": "passed",
+              "code_desc": "File /home/vagrant/config.toml content is expected to match /git_cookbook/",
+              "run_time": 0.0504147,
+              "start_time": "2021-05-25T00:11:32+07:00",
+              "resource_class": "file",
+              "resource_params": "[\"/home/vagrant/config.toml\"]"
+            }
+          ]
+        }
+      ],
+      "status": "loaded",
+      "status_message": ""
+    }
+  ],
+  "statistics": { "duration": 0.1300477 },
+  "version": "4.29.3"
+}

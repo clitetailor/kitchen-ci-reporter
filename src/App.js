@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Select, Switcher, Table } from "@moai/core";
+import { Select, Switcher, Table, Pane } from "@moai/core";
 import { useFetch } from "use-http";
 
 import "./App.css";
@@ -89,40 +89,40 @@ function App() {
 
       <div>
         <Table
-          styles={{
-            width: "100%",
-          }}
+          size={Table.sizes.large}
           rows={controls.map((control) => ({
             ...control,
             status: true,
           }))}
           rowKey={(control) => control.id}
           columns={[
-            { title: "Suite", render: "desc" },
+            { title: "Suite", render: "desc", fill: true },
             {
               title: "Pass/Failed",
               render: "status",
             },
           ]}
           expandRowRender={(control) => (
-            <Table
-              rows={[control]}
-              rowKey={(control) => control.id}
-              columns={[
-                { title: "ID", render: "id" },
-                { title: "Desc", render: "desc" },
-                {
-                  title: "Status",
-                  render: (control) =>
-                    control.results.reduce(
-                      (final, result) => result.status === "passed" && final,
-                      true
-                    )
-                      ? "Passed"
-                      : "Failed",
-                },
-              ]}
-            ></Table>
+            <Pane>
+              <Table
+                rows={[control]}
+                rowKey={(control) => control.id}
+                columns={[
+                  { title: "ID", render: "id" },
+                  { title: "Desc", render: "desc" },
+                  {
+                    title: "Status",
+                    render: (control) =>
+                      control.results.reduce(
+                        (final, result) => result.status === "passed" && final,
+                        true
+                      )
+                        ? "Passed"
+                        : "Failed",
+                  },
+                ]}
+              ></Table>
+            </Pane>
           )}
         ></Table>
       </div>
